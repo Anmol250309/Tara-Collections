@@ -1,0 +1,67 @@
+service_type = 'firebase';
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Product Images - readable by all
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // User Profile Images
+    match /users/{userId}/profile/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Order Images (for COD verification, payment proof, etc.)
+    match /orders/{orderId}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (
+        // User can write to their own order
+        isOrderOwner(orderId) ||
+        // Admin can write to any order
+        isAdmin()
+      );
+    }
+
+    // Banner Images
+    match /banners/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Coupon/Deal Images
+    match /coupons/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Temporary upload area
+    match /uploads/{uploadId} {
+      allow read: if false;
+      allow write: if request.auth != null;
+    }
+
+    // Admin uploads
+    match /admin/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+
+  // Admin check function
+  function isAdmin() {
+    return request.auth != null &&
+           exists(/databases/(default)/documents/admins/$(request.auth.uid));
+  }
+
+  // Check if user owns the order
+  function isOrderOwner(orderId) {
+    return isAdmin() || exists(
+      /databases/(default)/documents/orders/$(orderId)
+    ) &&
+    get(/databases/(default)/documents/orders/$(orderId)).data.userId == request.auth.uid;
+  }
+}

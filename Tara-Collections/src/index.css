@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+body {
+  @apply font-sans text-tara-black bg-tara-cream;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c6a66b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b08e5c;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Utility classes for animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Button styles */
+.btn {
+  @apply px-6 py-3 rounded-full font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-tara-gold text-white hover:bg-tara-gold-light shadow-md hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-tara-black text-white hover:bg-gray-900 shadow-md hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply border-2 border-tara-gold text-tara-gold hover:bg-tara-gold hover:text-white;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden;
+}
+
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.15);
+}
